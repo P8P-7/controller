@@ -288,8 +288,8 @@ void loop() {
       sendDisplay(WAARDE[1], x1);}}
   else if(abs(JoyStickLx - x1) > 5) {
     x1 = JoyStickLx;
-    sendControl(JSLX, JoyStickLx);
-    sendDisplay(WAARDE[1], JoyStickLx);}
+    sendControl(JSLX, x1);
+    sendDisplay(WAARDE[1], x1);}
    
   // JoyStickLefty---------------------------------------------------------
   JoyStickLy = analogRead(A1)-511;                     // Joystick JSLY uitlezen
@@ -310,8 +310,8 @@ void loop() {
       sendDisplay(WAARDE[2], y1);}}
   else if(abs(JoyStickLy - y1) > 5) {
     y1 = JoyStickLy;
-    sendControl(JSLY, JoyStickLy);
-    sendDisplay(WAARDE[2], JoyStickLy);}
+    sendControl(JSLY, y1);
+    sendDisplay(WAARDE[2], y1);}
     
   // JoyStickRightx---------------------------------------------------------
   JoyStickRx = analogRead(A2)-511;                      // Joystick JSRX uitlezen
@@ -332,7 +332,7 @@ void loop() {
       sendDisplay(WAARDE[3], x2);}}
   else if(abs(JoyStickRx - x2) > 5) {
     x2 = JoyStickRx;
-    sendControl(JSRX, JoyStickRx);
+    sendControl(JSRX, x2);
     sendDisplay(WAARDE[3], x2);}
   
   // JoyStickRighty---------------------------------------------------------
@@ -354,7 +354,7 @@ void loop() {
       sendDisplay(WAARDE[4], y2);}}
   else if(abs(JoyStickRy - y2) > 5) {
     y2 = JoyStickRy;
-    sendControl(JSRY, JoyStickRy);
+    sendControl(JSRY, y2);
     sendDisplay(WAARDE[4], y2);}  
   delay(10);
 };
