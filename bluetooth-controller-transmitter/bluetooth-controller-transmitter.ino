@@ -66,6 +66,10 @@ NexButton b13 = NexButton(3, 2, "b13");
 NexButton b14 = NexButton(3, 3, "b14");
 NexButton b15 = NexButton(3, 4, "b15");
 NexButton b16 = NexButton(3, 5, "b16");
+NexButton b17 = NexButton(4, 1, "b17");
+NexButton b18 = NexButton(4, 2, "b18");
+NexButton b19 = NexButton(4, 3, "b19");
+NexButton b20 = NexButton(4, 4, "b20");
 
 // Pagina's toevoegen--------------------
 NexPage page0 = NexPage(0, 0, "page0");
@@ -73,6 +77,7 @@ NexPage page1 = NexPage(1, 0, "page1");
 NexPage page2 = NexPage(2, 0, "page2");
 NexPage page3 = NexPage(3, 0, "page3");
 NexPage page4 = NexPage(4, 0, "page4");
+NexPage page5 = NexPage(5, 0, "page5");
 
 //Luisterlijst---------------------------
 NexTouch *nex_listen_list[] = 
@@ -90,6 +95,10 @@ NexTouch *nex_listen_list[] =
     &b14,
     &b15,
     &b16,
+    &b17,
+    &b18,
+    &b19,
+    &b20,
     &page0,
     &page1,
     &page2,
@@ -183,6 +192,30 @@ void b14PushCallback(void *ptr) {                   // Actie bij push b14
   sendConfig(MODE, 1);
 }
 
+void b15PushCallback(void *ptr) {                   // Actie bij push b15
+  sendConfig(MODE, 2);
+}
+
+void b16PushCallback(void *ptr) {                   // Actie bij push b16
+  sendConfig(MODE, 3);
+}
+
+void b17PushCallback(void *ptr) {                   // Actie bij push b17
+  // Preset Ramp
+}
+
+void b18PushCallback(void *ptr) {                   // Actie bij push b18
+  // Preset Flat
+}
+
+void b19PushCallback(void *ptr) {                   // Actie bij push b19
+  // Preset Up
+}
+
+void b20PushCallback(void *ptr) {                   // Actie bij push b20
+  // Preset Down
+}
+
 void receiveMessage() {                             // Ontvangen bericht verwerken vanaf bluetooth
   String string;
   int type, value;
@@ -215,6 +248,10 @@ void setup() {
   pinMode(11, INPUT);
   Serial.begin(9600);
   bt.begin(9600);
+  delay(2000);
+  bt.print("AT+NAMEGOLIATH");
+  delay(2000);
+  bt.print("AT+BAUD6");
   
 // Displayfuncties aanmaken--------------------------------------------  
   b4.attachPush(b4PushCallback);
@@ -223,8 +260,8 @@ void setup() {
   b12.attachPush(b12PushCallback);
   b13.attachPush(b13PushCallback);
   b14.attachPush(b14PushCallback);
-//  b15.attachPush(b15PushCallback);
-//  b16.attachPush(b16PushCallback);
+  b15.attachPush(b15PushCallback);
+  b16.attachPush(b16PushCallback);
   page0.attachPush(page0PushCallback);
   page1.attachPush(page1PushCallback);
   page2.attachPush(page2PushCallback); 
@@ -263,15 +300,15 @@ void loop() {
   // BatterijSpanning------------------------------------------------------
   // 150 tot 464 (analog - 512)
   // -4 tot 310 (analog - 666) 6.6V - 9.6V
-  /*
+  
   if(abs((analogRead(A4)-666) - Batterij) > 20) {   // Batterijspanning inlezen
     Batterij = (analogRead(A4)-666);
     BatterijDisp = Batterij * 100 / 310;
-    sendDisplay(WAARDE[6], BatterijDisp);}*/
+    sendDisplay(WAARDE[6], BatterijDisp);}
     
   // JoyStickLeftx---------------------------------------------------------
   JoyStickLx = analogRead(A0)-511;                     // Joystick JSLX uitlezen
-  if(JoyStickLx < Deadzone and JoyStickLx > -Deadzone) {
+  if((JoyStickLx < Deadzone) and (JoyStickLx > -Deadzone)) {
     if(x1 != 0) {
       x1 = 0;
       sendControl(JSLX, x1);
@@ -293,7 +330,7 @@ void loop() {
    
   // JoyStickLefty---------------------------------------------------------
   JoyStickLy = analogRead(A1)-511;                     // Joystick JSLY uitlezen
-  if(JoyStickLy < Deadzone and JoyStickLy > -Deadzone) {
+  if((JoyStickLy < Deadzone) and (JoyStickLy > -Deadzone)) {
     if(y1 != 0) {
       y1 = 0;
       sendControl(JSLY, y1);
@@ -315,7 +352,7 @@ void loop() {
     
   // JoyStickRightx---------------------------------------------------------
   JoyStickRx = analogRead(A2)-511;                      // Joystick JSRX uitlezen
-  if(JoyStickRx < Deadzone and JoyStickRx > -Deadzone) {
+  if((JoyStickRx < Deadzone) and (JoyStickRx > -Deadzone)) {
     if(x2 != 0) {
       x2 = 0;
       sendControl(JSRX, x2);
@@ -337,14 +374,14 @@ void loop() {
   
   // JoyStickRighty---------------------------------------------------------
   JoyStickRy = analogRead(A3)-511;                      // Joystick JSRY uitlezen
-  if(JoyStickRy < Deadzone and JoyStickRy > -Deadzone) {
+  if((JoyStickRy < Deadzone) and (JoyStickRy > -Deadzone)) {
     if(y2 != 0){
-      y2  =0;
+      y2  = 0;
       sendControl(JSRY, y2);
       sendDisplay(WAARDE[4], y2);}}
   else if(JoyStickRy > (511 - Deadzone)) {
-    if(y2!=511){
-      y2=511;
+    if(y2 != 511){
+      y2 = 511;
       sendControl(JSRY, y2);
       sendDisplay(WAARDE[4], y2);}}
   else if(JoyStickRy < (Deadzone - 511)) {
